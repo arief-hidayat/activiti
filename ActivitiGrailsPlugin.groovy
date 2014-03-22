@@ -114,7 +114,10 @@ class ActivitiGrailsPlugin {
 		            runtimeService = ref("runtimeService")
 		            taskService = ref("taskService")
 		            identityService = ref("identityService")
-		            formService = ref("formService")
+                    formService = ref("formService")
+                    repositoryService = ref("repositoryService")
+                    historyService = ref("historyService")
+                    managementService = ref("managementService")
 		        }
 			  
 				println "... finished configuring Activiti Process Engine."

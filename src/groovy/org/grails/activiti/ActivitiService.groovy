@@ -14,13 +14,19 @@
  */
 package org.grails.activiti
 
+import org.activiti.engine.EngineServices
 import org.activiti.engine.FormService
+import org.activiti.engine.HistoryService
 import org.activiti.engine.IdentityService
+import org.activiti.engine.ManagementService
+import org.activiti.engine.RepositoryService
 import org.activiti.engine.RuntimeService
 import org.activiti.engine.TaskService
+import org.activiti.engine.runtime.ProcessInstance
 import org.activiti.engine.task.Task
 import grails.util.GrailsNameUtils
 import grails.util.Holders
+import org.activiti.engine.task.TaskQuery
 
 /**
  *
@@ -28,16 +34,19 @@ import grails.util.Holders
  *
  * @since 5.0.beta2
  */
-class ActivitiService {
+class ActivitiService implements EngineServices {
 	
 	RuntimeService runtimeService
 	TaskService taskService
 	IdentityService identityService
 	FormService formService
+    RepositoryService repositoryService
+    HistoryService historyService
+    ManagementService managementService
 	String sessionUsernameKey = Holders.config.activiti.sessionUsernameKey?:ActivitiConstants.DEFAULT_SESSION_USERNAME_KEY
 	String usernamePropertyName = Holders.config.grails.plugins.springsecurity.userLookup.usernamePropertyName
-	
-	def startProcess(Map params) {
+
+    ProcessInstance startProcess(Map params) {
 		if (params.businessKey) {
 		  runtimeService.startProcessInstanceByKey(params.controller, params.businessKey, params)
 		} else {
@@ -46,7 +55,7 @@ class ActivitiService {
 	}		
 	
 	private findTasks(String methodName, String username, int firstResult, int maxResults, Map orderBy) {
-		def taskQuery = taskService.createTaskQuery()			
+		TaskQuery taskQuery = taskService.createTaskQuery()
 		if (methodName) {
 			taskQuery."${methodName}"(username)
 		}
@@ -59,22 +68,22 @@ class ActivitiService {
 	}
 	
 	private Long getTasksCount(String methodName, String username) {
-		def taskQuery = taskService.createTaskQuery()
+        TaskQuery taskQuery = taskService.createTaskQuery()
 		if (methodName) {
 			taskQuery."${methodName}"(username)
 		}
 		taskQuery.count()
-	} 
-	
-	def getAssignedTasksCount(String username) {
+	}
+
+    Long getAssignedTasksCount(String username) {
 		getTasksCount("taskAssignee", username)
 	}
-	
-	def getUnassignedTasksCount(String username) {
+
+    Long getUnassignedTasksCount(String username) {
 		getTasksCount("taskCandidateUser", username)
 	}
-	
-	def getAllTasksCount() {
+
+    Long getAllTasksCount() {
 		getTasksCount(null, null)
 	}
 	
@@ -102,31 +111,33 @@ class ActivitiService {
 		findTasks(null, null, getOffset(params.offset), params.max, orderBy)
 	}
 	
-	private getOffset(def offset) {
+	private int getOffset(def offset) {
 		return offset?Integer.parseInt(offset):0
 	}										  			  				
 	
-	def deleteTask(String taskId, String domainClassName = null) {
+	String deleteTask(String taskId, String domainClassName = null) {
 		String id = deleteDomainObject(taskId, domainClassName)
 		taskService.deleteTask(taskId)
 		return id
 	}			  
 	
-	private deleteDomainObject(String taskId, String domainClassName) {
+	private def deleteDomainObject(String taskId, String domainClassName) {
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult()
 		def id = getDomainObjectId(task)
 		if (id) {
-			def domainClass = Holders.grailsApplication.classLoader.loadClass(domainClassName?:getDomainClassName(task))
-			domainClass.get(id)?.delete(flush: true)
+            String domainClzNm = domainClassName?:getDomainClassName(task),
+                    findById = Holders.config.grails?.domain?.retrieveByIdMethod?."${domainClzNm.replaceAll("[.]". "?.")}" ?: "get"
+			def domainClass = Holders.grailsApplication.classLoader.loadClass(domainClzNm)
+			domainClass."$findById"(id)?.delete(flush: true)    //TODO: how if the domain class doesn't have get(id) method
 		}
 		return id
 	}
 	
-	private getDomainObjectId(Task task) {
+	private def getDomainObjectId(Task task) {
 		runtimeService.getVariable(task.executionId, "id")
 	}
 	
-	private getDomainClassName(Task task) {
+	private def getDomainClassName(Task task) {
 		runtimeService.getVariable(task.executionId, "domainClassName")
 	}	   
 	
@@ -145,25 +156,25 @@ class ActivitiService {
 		.singleResult()
 	}
 	
-	def claimTask(String taskId, String username) {
+	void claimTask(String taskId, String username) {
 		taskService.claim(taskId, username)
 	}		
 	
-	def completeTask(String taskId, Map params) {
+	void completeTask(String taskId, Map params) {
 		String executionId = taskService.createTaskQuery().taskId(taskId).singleResult().executionId
 		setIdAndDomainClassName(executionId, params)
 		runtimeService.setVariable(executionId, "uri", null)
 		taskService.complete(taskId, params)
 	}
 	
-	private setIdAndDomainClassName(String executionId, Map params) {
+	private void setIdAndDomainClassName(String executionId, Map params) {
 		if (params.id) {
 			runtimeService.setVariable(executionId, "id", params.id)
 			runtimeService.setVariable(executionId, "domainClassName", params.domainClassName as String)
 		}
 	}
 	
-	def setTaskFormUri(Map params) {
+	void setTaskFormUri(Map params) {
 		String executionId = taskService.createTaskQuery().taskId(params.taskId).singleResult().executionId
 		setIdAndDomainClassName(executionId, params)
 		if (params.controller && params.action && params.id) {
@@ -194,11 +205,11 @@ class ActivitiService {
 		return taskFormUri
 	}
 	
-	def setAssignee(String taskId, String username) {
+	void setAssignee(String taskId, String username) {
 		taskService.setAssignee(taskId, username)
 	}
 	
-	def setPriority(String taskId, int priority) {
+	void setPriority(String taskId, int priority) {
 		taskService.setPriority(taskId, priority)
 	}
 	
