@@ -1,3 +1,5 @@
 /grails-activiti-5.9.zip
 /plugin.xml
 /target
+/.idea
+*.iml

@@ -29,10 +29,9 @@ import org.apache.commons.logging.Log;
 import org.springframework.core.io.*
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.groovy.grails.commons.GrailsDomainClass;
-import org.codehaus.groovy.grails.commons.GrailsApplication;
 import org.codehaus.groovy.grails.scaffolding.GrailsTemplateGenerator;
 import org.codehaus.groovy.grails.commons.GrailsClassUtils as GCU
-import org.codehaus.groovy.grails.commons.ApplicationHolder
+import grails.util.Holders
 import grails.util.BuildSettingsHolder
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 import org.springframework.context.ResourceLoaderAware;
@@ -201,8 +200,15 @@ class CustomGrailsTemplateGenerator implements GrailsTemplateGenerator, Resource
         }
     }
 
+    @Override
+    void generateRestfulController(GrailsDomainClass domainClass, String destDir) throws IOException {
+        //TODO:
+    }
 
-
+    @Override
+    void generateAsyncController(GrailsDomainClass domainClass, String destDir) throws IOException {
+        //TODO:
+    }
 
     public void generateView(GrailsDomainClass domainClass, String viewName, String destDir) {
 		    LOG.debug "generateView($domainClass, $viewName, $destDir)"
@@ -246,6 +252,21 @@ class CustomGrailsTemplateGenerator implements GrailsTemplateGenerator, Resource
         t.make(binding).writeTo(out)
     }
 
+    @Override
+    void generateTest(GrailsDomainClass domainClass, String destDir) throws IOException {
+        //TODO:
+    }
+
+    @Override
+    void generateRestfulTest(GrailsDomainClass domainClass, String destDir) throws IOException {
+        //TODO:
+    }
+
+    @Override
+    void generateAsyncTest(GrailsDomainClass domainClass, String destDir) throws IOException {
+         //TODO:
+    }
+
     private def getPropertyName(GrailsDomainClass domainClass) {
         return domainClass.propertyName + 'Instance'
     }
@@ -265,7 +286,7 @@ class CustomGrailsTemplateGenerator implements GrailsTemplateGenerator, Resource
     }
 
     private getTemplateText(String template) {
-        def application = ApplicationHolder.getApplication()
+        def application = Holders.grailsApplication
         // first check for presence of template in application
         if (resourceLoader && application?.warDeployed) {
             return resourceLoader.getResource("/WEB-INF/${templatesDirName}/scaffolding/${template}").inputStream.text

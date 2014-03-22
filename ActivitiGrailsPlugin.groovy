@@ -17,7 +17,7 @@ import org.activiti.engine.runtime.ProcessInstance
 import org.activiti.engine.task.Task
 import grails.util.GrailsNameUtils
 import grails.util.Environment
-import org.codehaus.groovy.grails.commons.ConfigurationHolder as CH
+import grails.util.Holders as CH
 import org.codehaus.groovy.grails.commons.ControllerArtefactHandler
 import org.springframework.core.io.Resource 
 import org.grails.activiti.ActivitiConstants
@@ -31,7 +31,7 @@ import org.grails.activiti.serializable.SerializableVariableType
  */
 class ActivitiGrailsPlugin {
     // the plugin version
-    def version = "5.12.1"
+    def version = "5.15"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.0.0 > *"
     // the other plugins this plugin depends on

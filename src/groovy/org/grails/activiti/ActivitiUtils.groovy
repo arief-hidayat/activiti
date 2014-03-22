@@ -20,10 +20,11 @@ package org.grails.activiti
  *
  * @since 5.0.beta2
  */
-import org.codehaus.groovy.grails.commons.ApplicationHolder
+import grails.util.Holders
+
 
 class ActivitiUtils {
-	static def context = ApplicationHolder.getApplication().getMainContext()
+	static def context = Holders.applicationContext
 	
 	static getActivitiService() {
 		context.getBean("activitiService")
