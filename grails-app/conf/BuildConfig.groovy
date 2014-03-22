@@ -5,7 +5,11 @@ grails.project.dependency.resolution = {
     inherits 'global'
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
+        grailsPlugins()
+        grailsHome()
+        mavenLocal()
         grailsCentral()
+        mavenCentral()
 		mavenRepo name: "Activiti", root: "https://maven.alfresco.com/nexus/content/groups/public"
     }
     dependencies {
@@ -27,5 +31,7 @@ grails.project.dependency.resolution = {
     }
 	plugins {
 		build ":release:3.0.1"
+		build ':tomcat:7.0.52.1'
+		runtime ':hibernate:3.6.10.10' 
 	}
 }
