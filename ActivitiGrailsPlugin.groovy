@@ -16,7 +16,6 @@
 import org.activiti.engine.runtime.ProcessInstance
 import org.activiti.engine.task.Task
 import grails.util.GrailsNameUtils
-import grails.util.Environment
 import grails.util.Holders as CH
 import org.codehaus.groovy.grails.commons.ControllerArtefactHandler
 import org.springframework.core.io.Resource 
@@ -31,11 +30,13 @@ import org.grails.activiti.serializable.SerializableVariableType
  */
 class ActivitiGrailsPlugin {
     // the plugin version
-    def version = "5.15"
+    def version = "5.15.1"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.0.0 > *"
     // the other plugins this plugin depends on
     def dependsOn = [:]
+
+    def loadAfter = [ 'hibernate', 'hibernate4', 'gorm' ]
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
             "grails-app/views/error.gsp"

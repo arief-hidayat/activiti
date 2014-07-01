@@ -38,14 +38,14 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         // runtime 'mysql:mysql-connector-java:5.1.27'
-        compile ('org.activiti:activiti-engine:5.15') {
+        compile ('org.activiti:activiti-engine:5.15.1') {
             excludes 'livetribe-jsr223', 'spring-beans'
         }
-        runtime ('org.activiti:activiti-spring:5.15') {
+        runtime ('org.activiti:activiti-spring:5.15.1') {
             excludes 'spring-context', 'spring-jdbc', 'spring-orm', 'slf4j-log4j12', 'commons-dbcp'
         }
         //runtime 'org.springframework:spring-asm:3.1.4.RELEASE'
-        runtime 'javax.mail:mail:1.4.1'
+        runtime 'javax.mail:mail:1.4.7'
         test ('org.subethamail:subethasmtp-smtp:1.2') {
             excludes 'commons-logging'
         }
