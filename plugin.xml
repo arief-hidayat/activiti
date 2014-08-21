@@ -1,0 +1,19 @@
+<plugin name='activiti' version='5.16.1' grailsVersion='2.0.0 &gt; *'>
+  <author>Lim Chee Kin</author>
+  <authorEmail>limcheekin@vobject.com</authorEmail>
+  <title>Grails Activiti Plugin - Enabled Activiti BPM Suite support for Grails</title>
+  <description>
+ Grails Activiti Plugin is created to integrate Activiti BPM Suite and workflow system to Grails Framework. 
+ With the Grails Activiti Plugin, workflow application can be created at your fingertips! 
+
+ Project Site and Documentation: http://code.google.com/p/grails-activiti-plugin/
+ Source Code: https://github.com/limcheekin/activiti
+ Support: https://github.com/limcheekin/activiti/issues
+ Discussion Forum: http://groups.google.com/group/grails-activiti-plugin
+</description>
+  <documentation>http://grails.org/plugin/activiti</documentation>
+  <type>ActivitiGrailsPlugin</type>
+  <resources>
+    <resource>org.grails.activiti.TaskController</resource>
+  </resources>
+</plugin>

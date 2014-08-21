@@ -27,6 +27,7 @@ import org.activiti.engine.task.Task
 import grails.util.GrailsNameUtils
 import grails.util.Holders
 import org.activiti.engine.task.TaskQuery
+import org.activiti.spring.SpringProcessEngineConfiguration
 
 /**
  *
@@ -35,7 +36,7 @@ import org.activiti.engine.task.TaskQuery
  * @since 5.0.beta2
  */
 class ActivitiService implements EngineServices {
-	
+    SpringProcessEngineConfiguration processEngineConfiguration
 	RuntimeService runtimeService
 	TaskService taskService
 	IdentityService identityService
@@ -48,13 +49,13 @@ class ActivitiService implements EngineServices {
 
     ProcessInstance startProcess(Map params) {
 		if (params.businessKey) {
-		  runtimeService.startProcessInstanceByKey(params.controller, params.businessKey, params)
+		  runtimeService.startProcessInstanceByKey((String) params.controller, (String) params.businessKey, params)
 		} else {
 		  runtimeService.startProcessInstanceByKey(params.controller, params)
 		}
-	}		
+	}
 	
-	private findTasks(String methodName, String username, int firstResult, int maxResults, Map orderBy) {
+	private List<Task> findTasks(String methodName, String username, int firstResult, int maxResults, Map orderBy) {
 		TaskQuery taskQuery = taskService.createTaskQuery()
 		if (methodName) {
 			taskQuery."${methodName}"(username)
@@ -86,34 +87,50 @@ class ActivitiService implements EngineServices {
     Long getAllTasksCount() {
 		getTasksCount(null, null)
 	}
-	
-	def findAssignedTasks(Map params) {
+
+    List<Task> findAssignedTasks(Map params) {
 		def orderBy = Holders.config.activiti.assignedTasksOrderBy?:[:]
+        if (!params.sort) {
+            params.sort = "createTime"
+            params.order = "desc"
+        }
 		if (params.sort) {
 			orderBy << ["${params.sort}":params.order]
 		}
+        if(!params[sessionUsernameKey])
+            throw new RuntimeException("Expecting ${sessionUsernameKey} from parameter.")
 		findTasks("taskAssignee", params[sessionUsernameKey], getOffset(params.offset), params.max, orderBy)
 	}
-	
-	def findUnassignedTasks(Map params) {
+
+    List<Task> findUnassignedTasks(Map params) {
 		def orderBy = Holders.config.activiti.unassignedTasksOrderBy?:[:]
+        if (!params.sort) {
+            params.sort = "createTime"
+            params.order = "desc"
+        }
 		if (params.sort) {
 			orderBy << ["${params.sort}":params.order]
 		}
+        if(!params[sessionUsernameKey])
+            throw new RuntimeException("Expecting ${sessionUsernameKey} from parameter.")
 		findTasks("taskCandidateUser", params[sessionUsernameKey], getOffset(params.offset), params.max, orderBy)
-	}		
-	
-	def findAllTasks(Map params) {
+	}
+
+    List<Task> findAllTasks(Map params) {
 		def orderBy = Holders.config.activiti.allTasksOrderBy?:[:]
+        if (!params.sort) {
+            params.sort = "createTime"
+            params.order = "desc"
+        }
 		if (params.sort) {
 			orderBy << ["${params.sort}":params.order]
 		}
-		findTasks(null, null, getOffset(params.offset), params.max, orderBy)
+		findTasks(null, null, getOffset(params.offset), (int) params.max, orderBy)
 	}
 	
 	private int getOffset(def offset) {
-		return offset?Integer.parseInt(offset):0
-	}										  			  				
+		return offset? (offset instanceof String ? Integer.parseInt(offset) : offset) : 0
+	}
 	
 	String deleteTask(String taskId, String domainClassName = null) {
 		String id = deleteDomainObject(taskId, domainClassName)
@@ -175,7 +192,7 @@ class ActivitiService implements EngineServices {
 	}
 	
 	void setTaskFormUri(Map params) {
-		String executionId = taskService.createTaskQuery().taskId(params.taskId).singleResult().executionId
+		String executionId = taskService.createTaskQuery().taskId((String)params.taskId).singleResult().executionId
 		setIdAndDomainClassName(executionId, params)
 		if (params.controller && params.action && params.id) {
 			runtimeService.setVariable(executionId, "uri", "/${params.controller}/${params.action}/${params.id}")
@@ -233,4 +250,5 @@ class ActivitiService implements EngineServices {
 		}  		
 		return userIds.flatten().unique()
 	}
+
 }

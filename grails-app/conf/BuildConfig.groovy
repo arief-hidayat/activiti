@@ -38,13 +38,13 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         // runtime 'mysql:mysql-connector-java:5.1.27'
-        compile ('org.activiti:activiti-engine:5.15.1') {
+        compile ('org.activiti:activiti-engine:5.16.1') {
             excludes 'livetribe-jsr223', 'spring-beans'
         }
-        runtime ('org.activiti:activiti-spring:5.15.1') {
+        runtime ('org.activiti:activiti-spring:5.16.1') {
             excludes 'spring-context', 'spring-jdbc', 'spring-orm', 'slf4j-log4j12', 'commons-dbcp'
         }
-        //runtime 'org.springframework:spring-asm:3.1.4.RELEASE'
+        //runtime 'org.springframework:sdpring-asm:3.1.4.RELEASE'
         runtime 'javax.mail:mail:1.4.7'
         test ('org.subethamail:subethasmtp-smtp:1.2') {
             excludes 'commons-logging'
@@ -55,7 +55,7 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        compile ":scaffolding:2.0.3"
+//        compile ":scaffolding:2.0.3"
         build(":release:3.0.1",
                 ":rest-client-builder:1.0.3") {
             export = false

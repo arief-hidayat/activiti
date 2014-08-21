@@ -30,7 +30,7 @@ import org.grails.activiti.serializable.SerializableVariableType
  */
 class ActivitiGrailsPlugin {
     // the plugin version
-    def version = "5.15.1"
+    def version = "5.16.1"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.0.0 > *"
     // the other plugins this plugin depends on
@@ -92,8 +92,8 @@ class ActivitiGrailsPlugin {
 		            mailServerUsername = CH.config.activiti.mailServerUsername
 		            mailServerPassword = CH.config.activiti.mailServerPassword
 		            mailServerDefaultFrom = CH.config.activiti.mailServerDefaultFrom?:ActivitiConstants.DEFAULT_MAIL_SERVER_FROM
-		            dataSource = ref("dataSource")
-		            transactionManager = ref("transactionManager")
+		            dataSource = ref(CH.config.activiti.datasource ?: "dataSource")
+		            transactionManager = ref(CH.config.activiti.transactionManager ?: "transactionManager")
 
                     // Define custom serializable types for fix issue with serialization
                     customPreVariableTypes = [new SerializableVariableType()]
@@ -112,6 +112,7 @@ class ActivitiGrailsPlugin {
 		        formService(processEngine:"getFormService")
 				
 		        activitiService(org.grails.activiti.ActivitiService) {
+                    processEngineConfiguration = ref("processEngineConfiguration")
 		            runtimeService = ref("runtimeService")
 		            taskService = ref("taskService")
 		            identityService = ref("identityService")
