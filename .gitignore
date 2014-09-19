@@ -2,6 +2,7 @@ target/
 out/
 .idea/
 plugins/
+web-app/WEB-INF/classes/
 *.iml
 *.class
 *.log

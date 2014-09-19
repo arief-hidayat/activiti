@@ -36,15 +36,16 @@ grails.project.dependency.resolution = {
         mavenRepo name: "Activiti", root: "https://maven.alfresco.com/nexus/content/groups/public"
     }
     dependencies {
+        def activiVersion = "5.16.3"
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         // runtime 'mysql:mysql-connector-java:5.1.27'
-        compile ('org.activiti:activiti-engine:5.16.1') {
+        compile ("org.activiti:activiti-engine:$activiVersion") {
             excludes 'livetribe-jsr223', 'spring-beans'
         }
-        runtime ('org.activiti:activiti-spring:5.16.1') {
+        runtime ("org.activiti:activiti-spring:$activiVersion") {
             excludes 'spring-context', 'spring-jdbc', 'spring-orm', 'slf4j-log4j12', 'commons-dbcp'
         }
-        //runtime 'org.springframework:sdpring-asm:3.1.4.RELEASE'
+        //runtime 'org.springframework:spring-asm:3.1.4.RELEASE'
         runtime 'javax.mail:mail:1.4.7'
         test ('org.subethamail:subethasmtp-smtp:1.2') {
             excludes 'commons-logging'
