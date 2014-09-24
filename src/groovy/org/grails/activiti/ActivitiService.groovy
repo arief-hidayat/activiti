@@ -99,7 +99,7 @@ class ActivitiService implements EngineServices {
 		}
         if(!params[sessionUsernameKey])
             throw new RuntimeException("Expecting ${sessionUsernameKey} from parameter.")
-		findTasks("taskAssignee", params[sessionUsernameKey], getOffset(params.offset), params.max, orderBy)
+		findTasks("taskAssignee", params[sessionUsernameKey], getOffset(params), getMax(params), orderBy)
 	}
 
     List<Task> findUnassignedTasks(Map params) {
@@ -113,7 +113,7 @@ class ActivitiService implements EngineServices {
 		}
         if(!params[sessionUsernameKey])
             throw new RuntimeException("Expecting ${sessionUsernameKey} from parameter.")
-		findTasks("taskCandidateUser", params[sessionUsernameKey], getOffset(params.offset), params.max, orderBy)
+		findTasks("taskCandidateUser", params[sessionUsernameKey], getOffset(params), getMax(params), orderBy)
 	}
 
     List<Task> findAllTasks(Map params) {
@@ -125,12 +125,15 @@ class ActivitiService implements EngineServices {
 		if (params.sort) {
 			orderBy << ["${params.sort}":params.order]
 		}
-		findTasks(null, null, getOffset(params.offset), (int) params.max, orderBy)
+		findTasks(null, null, getOffset(params), getMax(params), orderBy)
 	}
 	
-	private int getOffset(def offset) {
-		return offset? (offset instanceof String ? Integer.parseInt(offset) : offset) : 0
+	private int getOffset(def params) {
+		return params.offset? (params.offset instanceof String ? Integer.parseInt(params.offset) : params.offset) : 0
 	}
+    private int getMax(def params) {
+        return params.max ? (params.max instanceof String ? Integer.parseInt(params.max) : params.max) : 10
+    }
 	
 	String deleteTask(String taskId, String domainClassName = null) {
 		String id = deleteDomainObject(taskId, domainClassName)
