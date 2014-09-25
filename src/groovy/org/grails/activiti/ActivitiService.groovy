@@ -22,6 +22,7 @@ import org.activiti.engine.ManagementService
 import org.activiti.engine.RepositoryService
 import org.activiti.engine.RuntimeService
 import org.activiti.engine.TaskService
+import org.activiti.engine.query.Query
 import org.activiti.engine.runtime.ProcessInstance
 import org.activiti.engine.task.Task
 import grails.util.GrailsNameUtils
@@ -167,7 +168,17 @@ class ActivitiService implements EngineServices {
 	
 	Task getUnassignedTask(String username, String processInstanceId) {
 		getTask("taskCandidateUser", username, processInstanceId)
-	}	
+	}
+
+    Task getLastTask(String processInstanceId, String executionId = null) {
+        getAllOrderedTasks(processInstanceId, executionId).singleResult()
+    }
+
+    private Query getAllOrderedTasks(String processInstanceId, String executionId = null) {
+        TaskQuery taskQuery = taskService.createTaskQuery().processInstanceId(processInstanceId)
+        if(executionId) taskQuery = taskQuery.executionId(executionId)
+        taskQuery.orderByTaskCreateTime().desc()
+    }
 	
 	private getTask(String methodName, String username, String processInstanceId) {
 		taskService.createTaskQuery()
