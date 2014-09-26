@@ -153,6 +153,10 @@ class ActivitiService implements EngineServices {
 		}
 		return id
 	}
+
+    void deleteProcessInstance(String processInstanceId, String reason) {
+        runtimeService.deleteProcessInstance(processInstanceId,reason)
+    }
 	
 	private def getDomainObjectId(Task task) {
 		runtimeService.getVariable(task.executionId, "id")
@@ -178,6 +182,10 @@ class ActivitiService implements EngineServices {
         TaskQuery taskQuery = taskService.createTaskQuery().processInstanceId(processInstanceId)
         if(executionId) taskQuery = taskQuery.executionId(executionId)
         taskQuery.orderByTaskCreateTime().desc()
+    }
+    TaskQuery getTaskQuery(String processInstanceId, String executionId, String taskId) {
+        taskService.createTaskQuery().processInstanceId(processInstanceId).executionId(executionId).
+                taskId(taskId)
     }
 	
 	private getTask(String methodName, String username, String processInstanceId) {
