@@ -86,12 +86,12 @@
 																		def userIds = ActivitiUtils.activitiService.getCandidateUserIds(taskInstance.id)
 																		def groups
 																		def groupIds
-                                                                                                                                                def User = grailsApplication.getDomainClass(grailsApplication.config.grails.plugins.springsecurity.userLookup.userDomainClassName).clazz
+                                                                                                                                                def User = grailsApplication.getDomainClass(grailsApplication.config.grails.plugin.springsecurity.userLookup.userDomainClassName).clazz
                                                                                                                                                 def users = []
 																		if (!applicationContext.getBean('pluginManager').hasGrailsPlugin('activitiSpringSecurity')) {
                                                                                                                                                   users = User."findAllByIdInList"(userIds)
 																		} else {
-																		  users = User."findAllBy${GrailsNameUtils.getClassNameRepresentation(grailsApplication.config.grails.plugins.springsecurity.userLookup.usernamePropertyName)}InList"(userIds)
+																		  users = User."findAllBy${GrailsNameUtils.getClassNameRepresentation(grailsApplication.config.grails.plugin.springsecurity.userLookup.usernamePropertyName)}InList"(userIds)
 																		}
                                                                         
                                                                 

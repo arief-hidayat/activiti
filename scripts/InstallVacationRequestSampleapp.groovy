@@ -105,10 +105,10 @@ private void updateConfig() {
 		if (configFile.exists()) {
 			configFile.withWriterAppend {
 				it.writeLine '\n// Added by the Spring Security Core plugin:'
-				it.writeLine "grails.plugins.springsecurity.userLookup.userDomainClassName = '${packageName}.User'"
-				it.writeLine "grails.plugins.springsecurity.userLookup.authorityJoinClassName = '${packageName}.UserRole'"
-				it.writeLine "grails.plugins.springsecurity.authority.className = '${packageName}.Role'"
-				it.writeLine "grails.plugins.springsecurity.useSecurityEventListener = true"
+				it.writeLine "grails.plugin.springsecurity.userLookup.userDomainClassName = '${packageName}.User'"
+				it.writeLine "grails.plugin.springsecurity.userLookup.authorityJoinClassName = '${packageName}.UserRole'"
+				it.writeLine "grails.plugin.springsecurity.authority.className = '${packageName}.Role'"
+				it.writeLine "grails.plugin.springsecurity.useSecurityEventListener = true"
 			}
 		}
 	}

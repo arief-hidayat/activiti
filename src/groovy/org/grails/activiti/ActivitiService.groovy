@@ -46,7 +46,7 @@ class ActivitiService implements EngineServices {
     HistoryService historyService
     ManagementService managementService
 	String sessionUsernameKey = Holders.config.activiti.sessionUsernameKey?:ActivitiConstants.DEFAULT_SESSION_USERNAME_KEY
-	String usernamePropertyName = Holders.config.grails.plugins.springsecurity.userLookup.usernamePropertyName
+	String usernamePropertyName = Holders.config.grails.plugin.springsecurity.userLookup.usernamePropertyName
 
     ProcessInstance startProcess(Map params) {
 		if (params.businessKey) {
