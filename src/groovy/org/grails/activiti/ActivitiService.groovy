@@ -187,6 +187,16 @@ class ActivitiService implements EngineServices {
         taskService.createTaskQuery().processInstanceId(processInstanceId).executionId(executionId).
                 taskId(taskId)
     }
+
+    TaskQuery getTaskQueryForUserAccessInProcess(String processDefKey, String username, List<String> roles) {
+        TaskQuery taskQuery = taskService.createTaskQuery().processDefinitionKey(processDefKey)
+        if(!roles?.isEmpty()) {
+            taskQuery = taskQuery.or().taskCandidateOrAssigned(username).taskCandidateGroupIn(roles).endOr()
+        } else {
+            taskQuery = taskQuery.taskCandidateOrAssigned(username)
+        }
+        taskQuery
+    }
 	
 	private getTask(String methodName, String username, String processInstanceId) {
 		taskService.createTaskQuery()
