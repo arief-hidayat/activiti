@@ -39,7 +39,8 @@ class ActivitiGrailsPlugin {
     def loadAfter = [ 'hibernate', 'hibernate4', 'gorm' ]
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
-            "grails-app/views/error.gsp"
+            "grails-app/views/error.gsp",
+            "grails-app/domain/org/grails/activiti/test/FakeFlowVariable.groovy"
     ]
 
     def author = "Lim Chee Kin"
@@ -96,7 +97,7 @@ class ActivitiGrailsPlugin {
 		            transactionManager = ref(CH.config.activiti.transactionManager ?: "transactionManager")
 
                     // Define custom serializable types for fix issue with serialization
-                    customPreVariableTypes = [new SerializableVariableType()]
+//                    customPreVariableTypes = [new SerializableVariableType()]
 		        }
 				
 				  processEngine(org.activiti.spring.ProcessEngineFactoryBean) {

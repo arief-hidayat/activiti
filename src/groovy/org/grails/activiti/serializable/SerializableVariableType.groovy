@@ -68,10 +68,11 @@ class SerializableVariableType extends ByteArrayType {
         ObjectOutputStream ois = null
         try {
             ois = new ObjectOutputStream(baos)
+            println "${value?.class} ${value}"
             ois.writeObject(value)
         }
         catch (Exception e) {
-            throw new ActivitiException("coudn't deserialize value '" + value + "' in variable '" + valueFields.getName() + "'", e)
+            throw new ActivitiException("couldn't serialize value '" + value + "' in variable '" + valueFields.getName() + "'", e)
         }
         finally {
             IoUtil.closeSilently(ois)
