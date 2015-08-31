@@ -36,7 +36,7 @@ grails.project.dependency.resolution = {
         mavenRepo name: "Activiti", root: "https://maven.alfresco.com/nexus/content/groups/public"
     }
     dependencies {
-        def activiVersion = "5.16.3"
+        def activiVersion = "5.18.0"
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         // runtime 'mysql:mysql-connector-java:5.1.27'
         compile ("org.activiti:activiti-engine:$activiVersion") {
