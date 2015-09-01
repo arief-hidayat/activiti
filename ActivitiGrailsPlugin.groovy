@@ -30,7 +30,7 @@ import org.grails.activiti.serializable.SerializableVariableType
  */
 class ActivitiGrailsPlugin {
     // the plugin version
-    def version = "5.16.3"
+    def version = "5.18.0"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.0.0 > *"
     // the other plugins this plugin depends on
@@ -40,7 +40,8 @@ class ActivitiGrailsPlugin {
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
             "grails-app/views/error.gsp",
-            "grails-app/domain/org/grails/activiti/test/FakeFlowVariable.groovy"
+            "grails-app/domain/org/grails/activiti/test/*.groovy",
+            "grails-app/services/org/grails/activiti/test/*.groovy"
     ]
 
     def author = "Lim Chee Kin"

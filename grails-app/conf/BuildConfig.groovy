@@ -47,16 +47,19 @@ grails.project.dependency.resolution = {
         }
         //runtime 'org.springframework:spring-asm:3.1.4.RELEASE'
         runtime 'javax.mail:mail:1.4.7'
-        test ('org.subethamail:subethasmtp-smtp:1.2') {
-            excludes 'commons-logging'
-        }
-        test ('org.subethamail:subethasmtp-wiser:1.2') {
-            excludes 'commons-logging'
-        }
+//        test ('org.subethamail:subethasmtp-smtp:1.2') {
+//            excludes 'commons-logging'
+//        }
+//        test ('org.subethamail:subethasmtp-wiser:1.2') {
+//            excludes 'commons-logging'
+//        }
     }
 
     plugins {
 //        compile ":scaffolding:2.0.3"
+
+        test ":greenmail:1.3.4"
+
         build(":release:3.0.1",
                 ":rest-client-builder:1.0.3") {
             export = false

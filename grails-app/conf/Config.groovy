@@ -74,7 +74,9 @@ environments {
         activiti {
 			  processEngineName = "activiti-engine-test"
 			  databaseSchemaUpdate = true
-	      mailServerPort = "5025"			  
+				mailServerHost = "localhost"
+	      	  mailServerPort = com.icegreen.greenmail.util.ServerSetupTest.SMTP.port
+				deploymentResources = ["file:./test/**/*.bpmn*.xml"]
         }
     }	
     production {
