@@ -2,16 +2,12 @@ package org.grails.activiti.test
 
 import grails.plugin.greenmail.GreenMail
 import org.activiti.engine.HistoryService
-import org.activiti.engine.RepositoryService
 import org.activiti.engine.RuntimeService
 import org.activiti.engine.TaskService
 import org.activiti.engine.runtime.ProcessInstance
 import org.activiti.engine.task.Task
 import spock.lang.Specification
 
-/**
- * Created by hida on 31/08/15.
- */
 class HiringDeveloperSpec extends Specification {
     RuntimeService runtimeService
 
@@ -53,10 +49,6 @@ class HiringDeveloperSpec extends Specification {
         greenMail.messagesCount == 1
         and:
         historyService.createHistoricProcessInstanceQuery().finished().count() == 1
-
-//        and:
-        // kill process
-//        runtimeService.deleteProcessInstance(processInstance.id, "Test is completed")
     }
 
 }
